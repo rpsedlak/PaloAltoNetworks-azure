@@ -1,0 +1,1 @@
+Get-AzureRmMarketplaceTerms -Publisher "paloaltonetworks" -Product "vmseries1" -Name "byol" | Set-AzureRmMarketplaceTerms -Accept
