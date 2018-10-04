@@ -1,0 +1,81 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "newStorageAccount": {
+            "value": "CHANGEME"
+        },
+        "storageAccountType": {
+            "value": "Standard_LRS"
+	    },
+        "storageAccountNewOrExisting" : {
+            "value" : "new"
+        },
+        "existingStorageAccountRG": {
+            "value" : ""
+        },
+        "dnsNameForPublicIP": {
+            "value": "CHANGEME"
+        },
+        "vmName": {
+            "value": "CHANGEME"
+        },
+        "adminUserName": {
+            "value": "CHANGEME"
+        },
+        "adminPassword": {
+    	    "value": "CHANGEME"
+        },
+        "authenticationType": {
+            "value": "password"
+        },
+        "sshKey": {
+            "value": ""
+        },
+        "vmSize": {
+            "value": "Standard_D3"
+        },
+        "srcIPInboundNSG": {
+            "value": "999.999.999.999"
+        },
+        "baseUrl" : {
+		    "value": "https://raw.github.com/rpsedlak/PaloAltoNetworks-azure/master/vmseries-simple-template"
+	    },
+        "virtualNetworkName": {
+            "value": "US-RG-INFRA-01-vnet"
+        },
+        "virtualNetworkAddressPrefix": {
+            "value": "10.10.0.0/20"
+        },
+        "subnet0Name": {
+            "value": "Mgmt"
+        },
+        "subnet1Name": {
+            "value": "Untrust"
+        },
+        "subnet2Name": {
+            "value": "Trust"
+        },
+        "subnet0Prefix": {
+            "value": "10.10.0.0/24"
+        },
+        "subnet1Prefix": {
+            "value": "10.10.1.0/24"
+        },
+        "subnet2Prefix": {
+            "value": "10.10.2.0/24"
+        },
+        "subnet0StartAddress": {
+            "value": "10.10.0.4"
+        },
+        "subnet1StartAddress": {
+            "value": "10.10.1.4"
+        },
+        "subnet2StartAddress": {
+            "value": "10.10.2.4"
+        }
+    }
+}

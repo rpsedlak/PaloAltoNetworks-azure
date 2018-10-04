@@ -227,7 +227,8 @@
 		}
 	  }
         }
-    }, {
+    },
+    {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables('fwpublicIPName')]",
@@ -238,95 +239,14 @@
                 "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
             }
         }
-    }, {
-        "apiVersion": "[variables('apiVersion')]",
-        "type": "Microsoft.Network/networkSecurityGroups",
-        "name": "[concat(parameters('vmName'), '-DefaultNSG')]",
-        "location": "[parameters('location')]",
-        "properties": {
-            "securityRules": [{
-                "name": "Allow-Outside-From-IP",
-                "properties": {
-                    "description": "Rule",
-                    "protocol": "*",
-                    "sourcePortRange": "*",
-                    "destinationPortRange": "*",
-                    "sourceAddressPrefix": "[parameters('srcIPInboundNSG')]",
-                    "destinationAddressPrefix": "*",
-                    "access": "Allow",
-                    "priority": 100,
-                    "direction": "Inbound"
-                }
-            }, {
-                "name": "Allow-Intra",
-                "properties": {
-                    "description": "Allow intra network traffic",
-                    "protocol": "*",
-                    "sourcePortRange": "*",
-                    "destinationPortRange": "*",
-                    "sourceAddressPrefix": "[concat(parameters('virtualNetworkAddressPrefix'))]",
-                    "destinationAddressPrefix": "*",
-                    "access": "Allow",
-                    "priority": 101,
-                    "direction": "Inbound"
-                }
-            }, {
-                "name": "Default-Deny",
-                "properties": {
-                    "description": "Default-Deny if we don't match Allow rule",
-                    "protocol": "*",
-                    "sourcePortRange": "*",
-                    "destinationPortRange": "*",
-                    "sourceAddressPrefix": "*",
-                    "destinationAddressPrefix": "*",
-                    "access": "Deny",
-                    "priority": 200,
-                    "direction": "Inbound"
-                }
-            }]
-        }
-    }, {
-        "apiVersion": "[variables('apiVersion')]",
-        "type": "Microsoft.Network/virtualNetworks",
-        "name": "[parameters('virtualNetworkName')]",
-        "location": "[parameters('location')]",
-        "dependsOn": [
-            "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgname-mgmt'))]"
-        ],
-        "properties": {
-            "addressSpace": {
-                "addressPrefixes": [
-                    "[parameters('virtualNetworkAddressPrefix')]"
-                ]
-            },
-            "subnets": [{
-                "name": "[parameters('subnet0Name')]",
-                "properties": {
-                    "addressPrefix": "[parameters('subnet0Prefix')]",
-                    "networkSecurityGroup": {
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname-mgmt'))]"
-                    }
-                }
-            }, {
-                "name": "[parameters('subnet1Name')]",
-                "properties": {
-                    "addressPrefix": "[parameters('subnet1Prefix')]"
-                }
-            }, {
-                "name": "[parameters('subnet2Name')]",
-                "properties": {
-                    "addressPrefix": "[parameters('subnet2Prefix')]"
-                }
-            }]
-        }
-    }, {
+    }, 
+    {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[concat(variables('nicName'), '0')]",
         "location": "[parameters('location')]",
         "dependsOn": [
-            "[concat('Microsoft.Network/publicIPAddresses/', variables('fwpublicIPName'))]",
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+            "[concat('Microsoft.Network/publicIPAddresses/', variables('fwpublicIPName'))]"
         ],
         "tags": {
             "displayName": "[concat('NetworkInterfaces', '0')]"
@@ -351,7 +271,6 @@
         "name": "[concat(variables('nicName'), '1')]",
         "location": "[parameters('location')]",
         "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
         ],
         "tags": {
             "displayName": "[concat('NetworkInterfaces', '1')]"
@@ -375,7 +294,6 @@
         "name": "[concat(variables('nicName'), '2')]",
         "location": "[parameters('location')]",
         "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
         ],
         "tags": {
             "displayName": "[concat('NetworkInterfaces', '2')]"
