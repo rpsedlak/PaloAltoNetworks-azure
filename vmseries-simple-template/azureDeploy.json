@@ -91,6 +91,13 @@
                 "description": "Subnet for the Trust"
             }
         },
+        "DMZSubnetName": {
+            "type": "string",
+            "defaultValue": "DMZ",
+            "metadata": {
+                "description": "Subnet for the DMZ"
+            }
+        },
         "managementSubnetStartAddress": {
             "type": "string",
             "defaultValue": "192.168.0.4",
@@ -108,6 +115,13 @@
         "trustedSubnetStartAddress": {
             "type": "string",
             "defaultValue": "192.168.2.4",
+            "metadata": {
+                "description": "Trust subnet start address"
+            }
+        },
+        "DMZSubnetStartAddress": {
+            "type": "string",
+            "defaultValue": "192.168.3.4",
             "metadata": {
                 "description": "Trust subnet start address"
             }
@@ -141,12 +155,14 @@
         "nicName": "[concat(parameters('vmName'), '-eth')]",
         "FWPrivateIPAddressUntrust": "[parameters('untrustedSubnetStartAddress')]",
         "FWPrivateIPAddressTrust": "[parameters('trustedSubnetStartAddress')]",
+        "FWPrivateIPAddressDMZ": "[parameters('DMZSubnetStartAddress')]",
         "publicIPAddressType": "Dynamic",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
         "nsgname-mgmt": "[concat(parameters('vmName'), '-DefaultNSG')]",
         "subnet0Ref": "[concat(variables('vnetID'),'/subnets/',parameters('managementSubnetName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',parameters('untrustedSubnetName'))]",
         "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',parameters('trustedSubnetName'))]",
+        "subnet3Ref": "[concat(variables('vnetID'),'/subnets/',parameters('DMZSubnetName'))]",
         "availabilitySetRef": "[resourceId('Microsoft.Compute/availabilitySets',parameters('availabilitySetName'))]",
 	    "vmTemplateUrl": "[concat(parameters('baseUrl'), '/virtual-machine-', parameters('authenticationType'),'.json')]"
     },
@@ -247,6 +263,33 @@
         }
     },
     {
+        "apiVersion": "[variables('apiVersion')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "comment": "trusted subnet NIC",
+        "name": "[concat(variables('nicName'), '3')]",
+        "location": "[variables('location')]",
+        "dependsOn": [
+        ],
+        "tags": {
+            "displayName": "[concat('NetworkInterfaces', '3')]"
+        },
+        "properties": {
+            "enableIPForwarding": true,
+            "ipConfigurations": [
+                {
+                    "name": "[concat('ipconfig', '3')]",
+                    "properties": {
+                        "privateIPAllocationMethod": "Static",
+                        "privateIPAddress": "[variables('FWPrivateIPAddressDMZ')]",
+                        "subnet": {
+                            "id": "[variables('subnet3Ref')]"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
         "comments": "GENERIC availability set",
         "apiVersion": "2016-04-30-preview",
         "type": "Microsoft.Compute/availabilitySets",
@@ -268,7 +311,8 @@
       "dependsOn": [
          "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '0')]",
          "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '1')]",
-         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '2')]"
+         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '2')]",
+         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '3')]"
       ],
       "properties": {
         "mode": "Incremental",
