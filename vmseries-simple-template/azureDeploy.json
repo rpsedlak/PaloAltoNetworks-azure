@@ -182,7 +182,7 @@
     {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/networkInterfaces",
-        "comment": "Management subnet NIC",
+        "comments": "Management subnet NIC",
         "name": "[concat(variables('nicName'), '0')]",
         "location": "[variables('location')]",
         "dependsOn": [
@@ -211,7 +211,7 @@
     {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/networkInterfaces",
-        "comment": "untrusted subnet NIC",
+        "comments": "untrusted subnet NIC",
         "name": "[concat(variables('nicName'), '1')]",
         "location": "[variables('location')]",
         "dependsOn": [
@@ -238,7 +238,7 @@
     {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/networkInterfaces",
-        "comment": "trusted subnet NIC",
+        "comments": "trusted subnet NIC",
         "name": "[concat(variables('nicName'), '2')]",
         "location": "[variables('location')]",
         "dependsOn": [
@@ -265,7 +265,7 @@
     {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/networkInterfaces",
-        "comment": "trusted subnet NIC",
+        "comments": "trusted subnet NIC",
         "name": "[concat(variables('nicName'), '3')]",
         "location": "[variables('location')]",
         "dependsOn": [
@@ -322,7 +322,7 @@
         },
         "parameters": {
           "location": {
-            "value": "[parameters('location')]"
+            "value": "[variables('location')]"
           },
           "vmName": {
             "value": "[parameters('vmName')]"
